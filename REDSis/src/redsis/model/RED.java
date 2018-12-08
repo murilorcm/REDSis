@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package redsis.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -13,29 +7,30 @@ import java.util.Date;
  * @author murilo
  */
 public class RED {
-    String aluno;
+    private int codigo;
+    String nomeAluno;
     String prontuario;
     Date dataInicio;
     Date dataFim;
-    ArrayList<Disciplina> disciplinas;
+    Disciplina disciplina;
 
     public RED(String aluno, String prontuario, Date dataInicio, Date dataFim, Disciplina disciplina) {
-        this.aluno = aluno;
+        this.nomeAluno = aluno;
         this.prontuario = prontuario;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.disciplinas.add(disciplina);
+        this.disciplina = disciplina;
     }
 
     public RED() {
     }
 
     public String getAluno() {
-        return aluno;
+        return nomeAluno;
     }
 
     public void setAluno(String aluno) {
-        this.aluno = aluno;
+        this.nomeAluno = aluno;
     }
 
     public String getProntuario() {
@@ -62,11 +57,11 @@ public class RED {
         this.dataFim = dataFim;
     }
 
-    public ArrayList<Disciplina> getDisciplinas() {
-        return disciplinas;
+    public Disciplina getDisciplinas() {
+        return disciplina;
     }
 
     public void setDisciplina(Disciplina disciplina) {
-        this.disciplinas.add(disciplina);
+        this.disciplina = disciplina;
     }
 }
