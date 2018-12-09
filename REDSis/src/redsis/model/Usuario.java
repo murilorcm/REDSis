@@ -7,12 +7,12 @@ package redsis.model;
 public class Usuario {
     private int codigo;
     String nome;
-    String prontuário;
+    String prontuario;
     String senha;
 
     public Usuario(int codigo, String nome, String prontuário, String senha) {
         this.nome = nome;
-        this.prontuário = prontuário;
+        this.prontuario = prontuário;
         this.senha = senha;
     }
     
@@ -35,12 +35,12 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getProntuário() {
-        return prontuário;
+    public String getProntuario() {
+        return prontuario;
     }
 
     public void setProntuário(String prontuário) {
-        this.prontuário = prontuário;
+        this.prontuario = prontuário;
     }
 
     public String getSenha() {

@@ -10,14 +10,14 @@ public class Disciplina {
     private int codigo;
     String nome;
     String sigla;
-    String pofessor;
+    String professor;
     String semestre;
     Calendar ano;
 
     public Disciplina(String nome, String sigla, String pofessor, String semestre, int ano) {
         this.nome = nome;
         this.sigla = sigla;
-        this.pofessor = pofessor;
+        this.professor = pofessor;
         this.semestre = semestre;
         this.ano.set(Calendar.YEAR, ano);
     }
@@ -25,6 +25,14 @@ public class Disciplina {
     public Disciplina() {
     }
 
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+    
     public String getNome() {
         return nome;
     }
@@ -41,12 +49,12 @@ public class Disciplina {
         this.sigla = sigla;
     }
 
-    public String getPofessor() {
-        return pofessor;
+    public String getProfessor() {
+        return professor;
     }
 
-    public void setPofessor(String pofessor) {
-        this.pofessor = pofessor;
+    public void setProfessor(String pofessor) {
+        this.professor = pofessor;
     }
 
     public String getSemestre() {

@@ -8,5 +8,6 @@ import redsis.model.Usuario;
  */
 public interface IUsuarioDAO {
     public void inserir(Usuario usuario);
-    public void alterar(Usuario usuario);
+    public void atualizar(Usuario usuario);
+    public void consultar(Usuario usuario);
 }
