@@ -1,6 +1,7 @@
 package redsis.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -12,25 +13,33 @@ public class RED {
     String prontuario;
     Date dataInicio;
     Date dataFim;
-    Disciplina disciplina;
+    List<Disciplina> disciplinas;
 
-    public RED(String aluno, String prontuario, Date dataInicio, Date dataFim, Disciplina disciplina) {
+    public RED(String aluno, String prontuario, Date dataInicio, Date dataFim, List<Disciplina> disciplinas) {
         this.nomeAluno = aluno;
         this.prontuario = prontuario;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.disciplina = disciplina;
+        this.disciplinas = disciplinas;
     }
 
     public RED() {
     }
 
-    public String getAluno() {
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNomeAluno() {
         return nomeAluno;
     }
 
-    public void setAluno(String aluno) {
-        this.nomeAluno = aluno;
+    public void setNomeAluno(String nomeAluno) {
+        this.nomeAluno = nomeAluno;
     }
 
     public String getProntuario() {
@@ -57,11 +66,11 @@ public class RED {
         this.dataFim = dataFim;
     }
 
-    public Disciplina getDisciplinas() {
-        return disciplina;
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
     }
 
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
     }
 }

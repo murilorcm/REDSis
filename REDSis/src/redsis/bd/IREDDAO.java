@@ -9,7 +9,7 @@ import redsis.model.RED;
  */
 public interface IREDDAO {
     public void inserir(RED red);
-    public void alterar(RED red);
+    public void atualizar(RED red);
     public void deletar(RED red);
     public List<RED> obterREDsProntuario(String prontuario);
 }
