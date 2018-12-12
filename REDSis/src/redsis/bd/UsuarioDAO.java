@@ -13,7 +13,7 @@ import redsis.model.Usuario;
 public class UsuarioDAO implements IUsuarioDAO {
     private final ConnectionFactory cf;
     private PreparedStatement stm;
-    private final ResultSet rs;  
+    private ResultSet rs;  
     private Connection con; 
 
     public UsuarioDAO() {
@@ -45,7 +45,7 @@ public class UsuarioDAO implements IUsuarioDAO {
         try {
             con = cf.obterConexao();
             stm = con.prepareStatement("UPDATE usuarios SET nome = ?, "
-                    + "prontuario = ?, senha = ?, WHERE codigo = ?");
+                    + "prontuario = ?, senha = ?, WHERE nome = ?");
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getProntuario());
             stm.setString(3, usuario.getSenha());
@@ -57,13 +57,15 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public void consultar(Usuario usuario) {
+    public boolean verificarLogin(Usuario usuario) {
         try {
             con = cf.obterConexao();
             stm = con.prepareStatement("SELECT * FROM usuarios WHERE nome = ? AND senha = ?");
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getSenha());
-            stm.executeUpdate();                
+            rs = stm.executeQuery();
+            
+            return rs.next();
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);
         }     

@@ -6,13 +6,14 @@
 package redsis.ui;
 
 import javax.swing.*;
+import redsis.model.RED;
 
 /**
  *
  * @author Andre
  */
 public class PanelAlterarRED extends javax.swing.JPanel {
-
+    RED red = new RED();
     /**
      * Creates new form PanelCadastroUsuario
      */
@@ -209,7 +210,7 @@ public class PanelAlterarRED extends javax.swing.JPanel {
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
-        JFrame frame = new FrameCadastrarDisciplina();
+        JFrame frame = new FrameCadastrarDisciplina(red);
         frame.setVisible(true);
     }//GEN-LAST:event_btAdicionarActionPerformed
 

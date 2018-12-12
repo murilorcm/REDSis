@@ -8,18 +8,19 @@ import java.util.Calendar;
  */
 public class Disciplina {
     private int codigo;
-    String nome;
-    String sigla;
-    String professor;
-    String semestre;
-    Calendar ano;
-
+    private String nome;
+    private String sigla;
+    private String professor;
+    private String semestre;
+    private int ano;
+    private RED red;
+    
     public Disciplina(String nome, String sigla, String pofessor, String semestre, int ano) {
         this.nome = nome;
         this.sigla = sigla;
         this.professor = pofessor;
         this.semestre = semestre;
-        this.ano.set(Calendar.YEAR, ano);
+        this.ano = ano;
     }
 
     public Disciplina() {
@@ -66,10 +67,18 @@ public class Disciplina {
     }
 
     public int getAno() {
-        return ano.get(Calendar.YEAR);
+        return ano;
     }
 
     public void setAno(int ano) {
-        this.ano.set(Calendar.YEAR, ano);
+        this.ano = ano;
+    }
+
+    public RED getRed() {
+        return red;
+    }
+
+    public void setRed(RED red) {
+        this.red = red;
     }
 }

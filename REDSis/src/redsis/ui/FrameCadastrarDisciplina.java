@@ -5,17 +5,24 @@
  */
 package redsis.ui;
 
+import javax.swing.JOptionPane;
+import redsis.controller.DisciplinaController;
+import redsis.model.Disciplina;
+import redsis.model.RED;
+
 /**
  *
  * @author Andre
  */
 public class FrameCadastrarDisciplina extends javax.swing.JFrame {
-
+    DisciplinaController disciplinaController = new DisciplinaController();
+    RED red = new RED();
     /**
      * Creates new form FrameCadastroResponsavel
      */
-    public FrameCadastrarDisciplina() {
+    public FrameCadastrarDisciplina(RED red) {
         initComponents();
+        this.red = red;
     }
 
     /**
@@ -68,9 +75,24 @@ public class FrameCadastrarDisciplina extends javax.swing.JFrame {
 
         lbSigla.setText("Sigla:");
 
+        tfNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNomeActionPerformed(evt);
+            }
+        });
+
         lbProfessor.setText("Professor:");
 
-        tfSigla.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        try {
+            tfSigla.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("UUUU#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        tfSigla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSiglaActionPerformed(evt);
+            }
+        });
 
         btInserir.setText("Inserir");
         btInserir.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +114,11 @@ public class FrameCadastrarDisciplina extends javax.swing.JFrame {
         grupoSemestre.add(rbSegundoSemestre);
         rbSegundoSemestre.setText("Segundo");
 
-        tfProfessor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        try {
+            tfProfessor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("**********************************")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         lbAno.setText("Ano:");
 
@@ -192,17 +218,52 @@ public class FrameCadastrarDisciplina extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btCancelarActionPerformed
 
+    private void limpar() {
+        tfNome.setText("");
+        tfSigla.setText("");
+        tfProfessor.setText("");
+        rbPrimeiroSemestre.setSelected(false);
+        rbSegundoSemestre.setSelected(false);
+        tfAno.setText("");
+        tfNome.requestFocusInWindow();
+    }
+    
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        // TODO add your handling code here:
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirActionPerformed
-
+        Disciplina disciplina = new Disciplina();
+        
+        disciplina.setNome(tfNome.getText());
+        disciplina.setSigla(tfSigla.getText());
+        disciplina.setProfessor(tfProfessor.getText());
+        String semestre = null;
+        if (rbPrimeiroSemestre.isSelected()) {
+            semestre = "primeiro";
+        } else if (rbSegundoSemestre.isSelected()) {
+            semestre = "segundo";
+        } 
+        disciplina.setSemestre(semestre);
+        disciplina.setAno(Integer.parseInt(tfAno.getText()));
+        
+        red.adicionarDisciplina(disciplina);
+        disciplinaController.inserir(disciplina);
+        JOptionPane.showMessageDialog(this, "Disciplina inserida com sucesso!");
+        this.setVisible(false);
     }//GEN-LAST:event_btInserirActionPerformed
 
     private void rbPrimeiroSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbPrimeiroSemestreActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_rbPrimeiroSemestreActionPerformed
+
+    private void tfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNomeActionPerformed
+
+    private void tfSiglaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSiglaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfSiglaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancelar;

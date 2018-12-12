@@ -1,6 +1,8 @@
 package redsis.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,14 +15,14 @@ public class RED {
     String prontuario;
     Date dataInicio;
     Date dataFim;
-    List<Disciplina> disciplinas;
+    LinkedList<Disciplina> disciplinas;
 
     public RED(String aluno, String prontuario, Date dataInicio, Date dataFim, List<Disciplina> disciplinas) {
         this.nomeAluno = aluno;
         this.prontuario = prontuario;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.disciplinas = disciplinas;
+        this.disciplinas.addAll(disciplinas);
     }
 
     public RED() {
@@ -71,6 +73,10 @@ public class RED {
     }
 
     public void setDisciplinas(List<Disciplina> disciplinas) {
-        this.disciplinas = disciplinas;
+        this.disciplinas.addAll(disciplinas);
+    }
+
+    public void adicionarDisciplina(Disciplina disciplina) {
+        disciplinas.add(disciplina);
     }
 }

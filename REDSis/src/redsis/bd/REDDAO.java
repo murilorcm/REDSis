@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import redsis.model.DisciplinaRED;
 import redsis.model.RED;
 
 /**
@@ -19,7 +18,7 @@ public class REDDAO implements IREDDAO {
     private PreparedStatement stm = null;
     private ResultSet rs = null;  
     private Connection con = null;
-    private DisciplinaREDDAO disciplinaREDDAO = new DisciplinaREDDAO();
+    private final IDisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 
     public REDDAO() {
     }
@@ -36,17 +35,6 @@ public class REDDAO implements IREDDAO {
             stm.setDate(4, (Date) red.getDataFim());
             
             stm.executeUpdate();
-            
-            red.getDisciplinas().stream().map((disciplina) -> {
-                DisciplinaRED discRED = new DisciplinaRED();
-                discRED.setCodigoDisciplina(disciplina.getCodigo());
-                return discRED;
-            }).map((discRED) -> {
-                discRED.setCodigoRED(red.getCodigo());
-                return discRED;                
-            }).forEachOrdered((discRED) -> {
-                disciplinaREDDAO.inserir(discRED);
-            });
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);        
         } 
@@ -104,7 +92,7 @@ public class REDDAO implements IREDDAO {
                 red.setDataInicio(rs.getDate("dataInicio"));
                 red.setDataFim(rs.getDate("dataFim"));
                 
-                List disciplinas = disciplinaREDDAO.obterDisciplinasRED(red);
+                List disciplinas = disciplinaDAO.obterDisciplinasRED(red);
                 red.setDisciplinas(disciplinas);
           
                 reds.add(red);
@@ -115,5 +103,4 @@ public class REDDAO implements IREDDAO {
             throw new RuntimeException("Exceção: " + ex);
         }
     }
-    
 }

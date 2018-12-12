@@ -3,8 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/muril/Documents/git/REDSis/REDSis/src/redsis/model/RED.java</file>
-            <file>file:/C:/Users/muril/Documents/git/REDSis/REDSis/src/redsis/bd/REDDAO.java</file>
+            <file>file:/C:/Users/muril/Documents/git/REDSis/REDSis/src/redsis/bd/DisciplinaREDDAO.java</file>
+            <file>file:/C:/Users/muril/Documents/git/REDSis/REDSis/src/redsis/bd/IDisciplinaREDDAO.java</file>
         </group>
     </open-files>
 </project-private>

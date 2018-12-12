@@ -2,6 +2,7 @@ package redsis.bd;
 
 import java.util.List;
 import redsis.model.Disciplina;
+import redsis.model.RED;
 
 /**
  *
@@ -9,5 +10,5 @@ import redsis.model.Disciplina;
  */
 public interface IDisciplinaDAO {
     public void inserir(Disciplina disciplina);
-    public List<Disciplina> obterTodas();
+    public List<Disciplina> obterDisciplinasRED(RED red);
 }
