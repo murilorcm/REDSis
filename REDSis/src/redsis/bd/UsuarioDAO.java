@@ -44,12 +44,11 @@ public class UsuarioDAO implements IUsuarioDAO {
     public void atualizar(Usuario usuario) {
         try {
             con = cf.obterConexao();
-            stm = con.prepareStatement("UPDATE usuarios SET nome = ?, "
-                    + "prontuario = ?, senha = ?, WHERE nome = ?");
+            stm = con.prepareStatement("UPDATE usuarios SET nome = ?, prontuario = ?, senha = ? WHERE prontuario = ?");
             stm.setString(1, usuario.getNome());
             stm.setString(2, usuario.getProntuario());
             stm.setString(3, usuario.getSenha());
-            stm.setInt(4, usuario.getCodigo());
+            stm.setString(4, usuario.getProntuario());
             stm.executeUpdate();                
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);
@@ -60,8 +59,8 @@ public class UsuarioDAO implements IUsuarioDAO {
     public boolean verificarLogin(Usuario usuario) {
         try {
             con = cf.obterConexao();
-            stm = con.prepareStatement("SELECT * FROM usuarios WHERE nome = ? AND senha = ?");
-            stm.setString(1, usuario.getNome());
+            stm = con.prepareStatement("SELECT * FROM usuarios WHERE prontuario = ? AND senha = ?;");
+            stm.setString(1, usuario.getProntuario());
             stm.setString(2, usuario.getSenha());
             rs = stm.executeQuery();
             
@@ -70,4 +69,24 @@ public class UsuarioDAO implements IUsuarioDAO {
             throw new RuntimeException("Exceção: " + ex);
         }     
     }
+
+    @Override
+    public Usuario consultar(Usuario usuario) {
+        try {
+            con = cf.obterConexao();
+            stm = con.prepareStatement("SELECT * FROM usuarios WHERE prontuario = ? AND senha = ?;");
+            stm.setString(1, usuario.getProntuario());
+            stm.setString(2, usuario.getSenha());
+            rs = stm.executeQuery();
+            while(rs.next()) {
+                usuario.setCodigo(rs.getInt("codigo"));
+                usuario.setNome(rs.getString("nome"));
+            }
+            return usuario;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Exceção: " + ex);
+        }      
+    }
+    
+    
 }

@@ -16,18 +16,16 @@ public class ConnectionFactory {
     }
 
     public Connection obterConexao() {
-        // TODO implement here
         if(con == null){
             
             try{
                 Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost/REDSis?user=root");
+                con = DriverManager.getConnection("jdbc:mysql://localhost/redsis?user=root");
             }catch(ClassNotFoundException cnfe){
                 System.out.println("Exceção de classe não encontrada.");
             }catch (SQLException sqle){
                 System.out.println("Exceção de conexão ao banco.");
             }
-            
         }
         return con;
     }

@@ -6,19 +6,20 @@
 package redsis.ui;
 
 import javax.swing.*;
-import java.awt.*;
+import redsis.model.Usuario;
 
 /**
  *
  * @author Andre
  */
 public class FrameCadastroRED extends javax.swing.JFrame {
-
+    Usuario usuario = new Usuario();
     /**
      * Creates new form FrameCadastroResponsaveis
      */
-    public FrameCadastroRED() {
+    public FrameCadastroRED(Usuario usuario) {
         initComponents();
+        this.usuario = usuario;
     }
 
     /**
@@ -167,7 +168,7 @@ public class FrameCadastroRED extends javax.swing.JFrame {
     }//GEN-LAST:event_mnSairActionPerformed
 
     private void mnAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAlterarSenhaActionPerformed
-        JPanel panel = new PanelAlterarSenha();
+        JPanel panel = new PanelAlterarSenha(usuario);
         this.setContentPane(panel); 
         this.setSize(this.getPreferredSize());
     }//GEN-LAST:event_mnAlterarSenhaActionPerformed

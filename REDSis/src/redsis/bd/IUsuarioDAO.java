@@ -10,4 +10,5 @@ public interface IUsuarioDAO {
     public void inserir(Usuario usuario);
     public void atualizar(Usuario usuario);
     public boolean verificarLogin(Usuario usuario);
+    public Usuario consultar(Usuario usuario);
 }

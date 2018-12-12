@@ -6,12 +6,14 @@
 package redsis.ui;
 
 import javax.swing.*;
+import redsis.controller.UsuarioController;
+import redsis.model.Usuario;
 /**
  *
  * @author Andre
  */
 public class FrameLogin extends javax.swing.JFrame {
-
+    UsuarioController usuarioController = new UsuarioController();
     /**
      * Creates new form FrameLogin
      */
@@ -122,18 +124,18 @@ public class FrameLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btFecharActionPerformed
 
     private void btLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLogarActionPerformed
-        // TODO devera verificar se o usuario com o prontuario fornecido existe
-        // e verificar se a senha fornecida coincide com a senha no banco
-        // se coincidir, a variavel loginSenhaCorreta deve ter o valor true
-        // senao, deve ter o valor false
-        boolean loginSenhaCorreta = true;
+        Usuario usuario = new Usuario();
+        usuario.setProntuário(tfProntuario.getText());
+        usuario.setSenha(tfSenha.getText());
+        
+        boolean loginSenhaCorreta = usuarioController.verificarLogin(usuario);
         
         if(loginSenhaCorreta) {
-            JFrame aplicacao = new FrameCadastroRED();
+            usuario = usuarioController.consultarProntuario(usuario);
+            JFrame aplicacao = new FrameCadastroRED(usuario);
             aplicacao.setVisible(true);
             this.setVisible(false);
         } else {
-        //senao coincidir, exibe mensagem de erro
             JOptionPane.showMessageDialog(this, "Login ou senha inválidos.");
         }
     }//GEN-LAST:event_btLogarActionPerformed

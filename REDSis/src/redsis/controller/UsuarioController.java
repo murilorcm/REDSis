@@ -28,4 +28,8 @@ public class UsuarioController {
     public boolean verificarLogin(Usuario usuario) {
         return dao.verificarLogin(usuario);
     }
+
+    public Usuario consultarProntuario(Usuario usuario) {
+        return dao.consultar(usuario);
+    }
 }

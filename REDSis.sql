@@ -6,5 +6,6 @@ CREATE TABLE disciplinas(codigo int(3) AUTO_INCREMENT, nome varchar(40), sigla v
 
 CREATE TABLE reds(codigo int(3) AUTO_INCREMENT, nomeAluno varchar(40), prontuario varchar(40), dataInicio date, dataFim date, PRIMARY KEY (codigo));
 
-CREATE TABLE usuarios(codigo int(3) AUTO_INCREMENT, nome varchar(40), prontuário varchar(40), senha varchar(40), PRIMARY KEY(codigo));
+CREATE TABLE usuarios(codigo int(3) AUTO_INCREMENT, nome varchar(40), prontuario varchar(40), senha varchar(40), PRIMARY KEY(codigo));
 
+INSERT INTO usuarios(nome, prontuario, senha) VALUES ("admin", "admin", "admin");

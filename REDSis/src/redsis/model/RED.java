@@ -2,7 +2,6 @@ package redsis.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public class RED {
     String prontuario;
     Date dataInicio;
     Date dataFim;
-    LinkedList<Disciplina> disciplinas;
+    List<Disciplina> disciplinas = new ArrayList<>();
 
     public RED(String aluno, String prontuario, Date dataInicio, Date dataFim, List<Disciplina> disciplinas) {
         this.nomeAluno = aluno;

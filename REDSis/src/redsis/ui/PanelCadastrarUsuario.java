@@ -6,6 +6,8 @@
 package redsis.ui;
 
 import javax.swing.*;
+import redsis.controller.UsuarioController;
+import redsis.model.Usuario;
 
 /**
  *
@@ -13,6 +15,8 @@ import javax.swing.*;
  */
 public class PanelCadastrarUsuario extends javax.swing.JPanel {
 
+    UsuarioController usuarioController = new UsuarioController();
+    
     /**
      * Creates new form PanelCadastroUsuario
      */
@@ -145,15 +149,34 @@ public class PanelCadastrarUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-
+        Usuario usuario = new Usuario();
+        if (tfSenha.getText().equals(tfSenhaRepetir.getText())) {
+            usuario.setNome(tfNome.getText());
+            usuario.setProntuário(tfProntuario.getText());
+            usuario.setSenha(tfSenha.getText());
+            
+            usuarioController.inserir(usuario);
+            JOptionPane.showMessageDialog(this, "Usuário cadastrado.");
+            limpar();
+        } else {
+            JOptionPane.showMessageDialog(this, "Senhas não coincidem.");
+        }
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        
+        this.setVisible(false);
     }//GEN-LAST:event_btCancelarActionPerformed
-
+    
+    private void limpar() {
+        tfNome.setText("");
+        tfProntuario.setText("");
+        tfSenha.setText("");
+        tfSenhaRepetir.setText("");
+        tfNome.requestFocusInWindow();
+    }
+    
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        // TODO add your handling code here:
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
 
