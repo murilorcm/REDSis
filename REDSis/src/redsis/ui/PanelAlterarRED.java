@@ -210,7 +210,7 @@ public class PanelAlterarRED extends javax.swing.JPanel {
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
-        JFrame frame = new FrameCadastrarDisciplina(red);
+        JFrame frame = new FrameCadastrarDisciplina(red, tbDisciplinas);
         frame.setVisible(true);
     }//GEN-LAST:event_btAdicionarActionPerformed
 

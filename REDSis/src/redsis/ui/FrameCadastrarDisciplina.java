@@ -6,6 +6,8 @@
 package redsis.ui;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 import redsis.controller.DisciplinaController;
 import redsis.model.Disciplina;
 import redsis.model.RED;
@@ -15,14 +17,16 @@ import redsis.model.RED;
  * @author Andre
  */
 public class FrameCadastrarDisciplina extends javax.swing.JFrame {
-    DisciplinaController disciplinaController = new DisciplinaController();
-    RED red = new RED();
+    private DisciplinaController disciplinaController = new DisciplinaController();
+    private RED red = new RED();
+    private JTable tbDisciplinas;
     /**
      * Creates new form FrameCadastroResponsavel
      */
-    public FrameCadastrarDisciplina(RED red) {
+    public FrameCadastrarDisciplina(RED red, JTable tbDisciplinas) {
         initComponents();
         this.red = red;
+        this.tbDisciplinas = tbDisciplinas;
     }
 
     /**
@@ -248,7 +252,10 @@ public class FrameCadastrarDisciplina extends javax.swing.JFrame {
         disciplina.setAno(Integer.parseInt(tfAno.getText()));
         
         red.adicionarDisciplina(disciplina);
-        disciplinaController.inserir(disciplina);
+        
+        TableModel modeloTabela = new DisciplinaTabelaModelo(red.getDisciplinas());
+        tbDisciplinas.setModel(modeloTabela);
+        
         JOptionPane.showMessageDialog(this, "Disciplina inserida com sucesso!");
         this.setVisible(false);
     }//GEN-LAST:event_btInserirActionPerformed

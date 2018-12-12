@@ -12,4 +12,5 @@ public interface IREDDAO {
     public void atualizar(RED red);
     public void deletar(RED red);
     public List<RED> obterREDsProntuario(String prontuario);
+    public RED atualizarCodigo(RED red);
 }

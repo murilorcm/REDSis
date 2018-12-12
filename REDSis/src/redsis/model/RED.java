@@ -78,4 +78,12 @@ public class RED {
     public void adicionarDisciplina(Disciplina disciplina) {
         disciplinas.add(disciplina);
     }
+    
+    public void removerDisciplina(Disciplina disciplina) {
+        disciplinas.remove(disciplina);
+    }
+    
+    public void removerTodasDisciplinas() {
+        disciplinas.clear();
+    }
 }

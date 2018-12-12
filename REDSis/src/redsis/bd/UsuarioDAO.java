@@ -87,6 +87,4 @@ public class UsuarioDAO implements IUsuarioDAO {
             throw new RuntimeException("Exceção: " + ex);
         }      
     }
-    
-    
 }

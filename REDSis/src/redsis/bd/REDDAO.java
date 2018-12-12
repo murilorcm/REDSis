@@ -5,8 +5,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import redsis.model.RED;
 
 /**
@@ -26,18 +30,21 @@ public class REDDAO implements IREDDAO {
     @Override
     public void inserir(RED red) {
         try {
+           //
             con = cf.obterConexao();
             stm = con.prepareStatement("INSERT INTO reds (nomeAluno, prontuario, dataInicio, dataFim) VALUES (?, ?, ?, ?)");
             
             stm.setString(1, red.getNomeAluno());
             stm.setString(2, red.getProntuario());
-            stm.setDate(3, (Date) red.getDataInicio());
-            stm.setDate(4, (Date) red.getDataFim());
+            //String dataInicio = sfd.format(red.getDataInicio());
+            stm.setDate(3, new Date(red.getDataInicio().getTime()));
+            //String dataFim = sfd.format(red.getDataFim());
+            stm.setDate(4, new Date(red.getDataFim().getTime()));
             
             stm.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);        
-        } 
+        }
     }
 
     @Override
@@ -102,5 +109,22 @@ public class REDDAO implements IREDDAO {
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);
         }
+    }
+
+    @Override
+    public RED atualizarCodigo(RED red) {
+        try {
+            con = cf.obterConexao();
+            stm = con.prepareStatement("SELECT * FROM reds WHERE prontuario = ? AND dataInicio = ?;");
+            stm.setString(1, red.getProntuario());
+            stm.setDate(2, new Date(red.getDataInicio().getTime()));
+            rs = stm.executeQuery();
+            while(rs.next()) {
+                red.setCodigo(rs.getInt("codigo"));
+            }
+            return red;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Exceção: " + ex);
+        }    
     }
 }

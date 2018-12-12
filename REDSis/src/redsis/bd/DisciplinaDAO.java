@@ -26,7 +26,7 @@ public class DisciplinaDAO implements IDisciplinaDAO{
     public void inserir(Disciplina disciplina) {
          try {
             con = cf.obterConexao();
-            stm = con.prepareStatement("INSERT INTO disciplinas (nome, sigla, pofessor, semestre, ano, codigoRed) VALUES (?, ?, ?, ?, ?, ?)");
+            stm = con.prepareStatement("INSERT INTO disciplinas (nome, sigla, professor, semestre, ano, codigoRed) VALUES (?, ?, ?, ?, ?, ?)");
           
             stm.setString(1, disciplina.getNome());
             stm.setString(2, disciplina.getSigla());

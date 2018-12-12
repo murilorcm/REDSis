@@ -5,7 +5,18 @@
  */
 package redsis.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import redsis.controller.DisciplinaController;
+import redsis.controller.REDController;
+import redsis.model.Disciplina;
 import redsis.model.RED;
 
 /**
@@ -13,12 +24,15 @@ import redsis.model.RED;
  * @author Andre
  */
 public class PanelCadastrarRED extends javax.swing.JPanel {
-    RED red = new RED();
+    private RED red = new RED();
+    private REDController redController = new REDController();
+    private DisciplinaController disciplinaController = new DisciplinaController();
     /**
      * Creates new form PanelCadastroUsuario
      */
     public PanelCadastrarRED() {
         initComponents();
+        atualizarTableModel(red.getDisciplinas());
     }
 
     /**
@@ -47,6 +61,17 @@ public class PanelCadastrarRED extends javax.swing.JPanel {
         btAdicionar = new javax.swing.JButton();
         btRemover = new javax.swing.JButton();
         lbProntuario = new javax.swing.JLabel();
+
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                atualizarTabela(evt);
+            }
+        });
 
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -196,25 +221,80 @@ public class PanelCadastrarRED extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-        
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            red.setNomeAluno(tfNome.getText());
+            red.setProntuario(tfProntuario.getText());
+            red.setDataInicio(sdf.parse(tfDataInicio.getText()));
+            red.setDataFim(sdf.parse(tfDataFim.getText()));
+            
+            redController.inserir(red);
+            
+            red = redController.atualizarCodigo(red);
+            
+            red.getDisciplinas().forEach(new Consumer<Disciplina>() {
+                @Override
+                public void accept(Disciplina disciplina) {
+                    disciplina.setRed(red);
+                    disciplinaController.inserir(disciplina);
+                }
+            });
+            
+            limpar();
+        } catch (ParseException ex) {
+            Logger.getLogger(PanelCadastrarRED.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btCancelarActionPerformed
-
+    
+    private void atualizarTableModel(List<Disciplina> disciplinas) {
+        TableModel modeloTabela = new DisciplinaTabelaModelo(disciplinas);
+        tbDisciplinas.setModel(modeloTabela);
+    }
+    
+    private void limpar() {
+        tfNome.setText("");
+        tfProntuario.setText("");
+        tfDataInicio.setText("");
+        tfDataFim.setText("");
+        red.removerTodasDisciplinas();
+        
+        atualizarTableModel(red.getDisciplinas());
+        
+        tfNome.requestFocusInWindow();
+    }
+    
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        // TODO add your handling code here:
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
-        JFrame frame = new FrameCadastrarDisciplina(red);
+        JFrame frame = new FrameCadastrarDisciplina(red, tbDisciplinas);
         frame.setVisible(true);
     }//GEN-LAST:event_btAdicionarActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
-        // TODO add your handling code here:
+        Disciplina disciplina;
+        DisciplinaTabelaModelo modeloTabela = new DisciplinaTabelaModelo(red.getDisciplinas());
+        disciplina = modeloTabela.getDisciplinaSelecionada(tbDisciplinas.getSelectedRow());
+        
+        if (disciplina != null) {
+            red.removerDisciplina(disciplina);
+            atualizarTableModel(red.getDisciplinas());
+        }
     }//GEN-LAST:event_btRemoverActionPerformed
+
+    private void atualizarTabela(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_atualizarTabela
+
+    }//GEN-LAST:event_atualizarTabela
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseMoved
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

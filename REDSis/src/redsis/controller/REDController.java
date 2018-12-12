@@ -31,4 +31,8 @@ public class REDController {
     public List<RED> obterREDsProntuario(String prontuario) {
         return dao.obterREDsProntuario(prontuario);
     }
+    
+    public RED atualizarCodigo(RED red) {
+        return dao.atualizarCodigo(red);
+    }
 }
