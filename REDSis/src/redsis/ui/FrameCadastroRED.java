@@ -174,7 +174,7 @@ public class FrameCadastroRED extends javax.swing.JFrame {
     }//GEN-LAST:event_mnAlterarSenhaActionPerformed
 
     private void mnVisualizarREDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnVisualizarREDActionPerformed
-        JPanel panel = new PanelVisualizarREDs();
+        JPanel panel = new PanelVisualizarREDs(this);
         this.setContentPane(panel); 
         this.setSize(this.getPreferredSize());
     }//GEN-LAST:event_mnVisualizarREDActionPerformed

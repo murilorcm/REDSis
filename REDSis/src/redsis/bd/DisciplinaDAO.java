@@ -46,7 +46,7 @@ public class DisciplinaDAO implements IDisciplinaDAO{
         List<Disciplina> disciplinas = new ArrayList();
         try{
             con = cf.obterConexao();
-            stm = con.prepareStatement("SELECT * FROM disciplina WHERE codigoRed = ?");
+            stm = con.prepareStatement("SELECT * FROM disciplinas WHERE codigoRed = ?");
             stm.setInt(1, red.getCodigo());
             
             rs = stm.executeQuery();
@@ -67,5 +67,19 @@ public class DisciplinaDAO implements IDisciplinaDAO{
         }
         
         return disciplinas;
+    }
+
+    @Override
+    public void remover(Disciplina disciplina) {
+        try {
+            con = cf.obterConexao();
+            stm = con.prepareStatement("DELETE FROM disciplinas WHERE codigoRed = ?");
+            
+            stm.setInt(1, disciplina.getRed().getCodigo());
+            
+            stm.executeUpdate();                     
+        } catch (SQLException ex) {
+            throw new RuntimeException("Exceção: " + ex);  
+        }
     }
 }

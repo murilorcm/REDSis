@@ -5,17 +5,33 @@
  */
 package redsis.ui;
 
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import redsis.controller.REDController;
+import redsis.model.ComparadorREDPorDataInicio;
+import redsis.model.ComparadorREDPorNome;
+import redsis.model.ComparadorREDPorProntuario;
+import redsis.model.RED;
+
 /**
  *
  * @author Andre
  */
 public class PanelVisualizarREDs extends javax.swing.JPanel {
-
+    private List<RED> reds;
+    private REDController redController = new REDController();
+    private JFrame pai;
+    
     /**
      * Creates new form PanelVisualizarAlunos
      */
-    public PanelVisualizarREDs() {
+    public PanelVisualizarREDs(JFrame pai) {
         initComponents();
+        reds = redController.obterTodos();
+        preencherTabela(reds);
+        this.pai = pai;
     }
 
     /**
@@ -182,27 +198,54 @@ public class PanelVisualizarREDs extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btOrdenarProntuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOrdenarProntuarioActionPerformed
-
+        reds.sort(new ComparadorREDPorProntuario());
+        preencherTabela(reds);
     }//GEN-LAST:event_btOrdenarProntuarioActionPerformed
 
     private void btOrdenarDataInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOrdenarDataInicioActionPerformed
-
+        reds.sort(new ComparadorREDPorDataInicio());
+        preencherTabela(reds);
     }//GEN-LAST:event_btOrdenarDataInicioActionPerformed
 
     private void btOrdenarNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOrdenarNomeActionPerformed
-
+        reds.sort(new ComparadorREDPorNome());
+        preencherTabela(reds);
     }//GEN-LAST:event_btOrdenarNomeActionPerformed
 
     private void btAlterarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarAlunoActionPerformed
-
+        int linha = tbAlunos.getSelectedRow();
+        RED red = reds.get(linha);
+        
+        JPanel panel = new PanelAlterarRED(red);
+        pai.setContentPane(panel);
+        pai.revalidate();
+        pai.repaint();
     }//GEN-LAST:event_btAlterarAlunoActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
-
+        int linha = tbAlunos.getSelectedRow();
+        RED red = reds.get(linha);
+        
+        redController.deletar(red);
+        reds.remove(red);
+        JOptionPane.showMessageDialog(this, "RED removida com sucesso!");
+        preencherTabela(reds);
     }//GEN-LAST:event_btRemoverActionPerformed
-
+    
+    private void preencherTabela(List<RED> reds){
+        REDTabelaModelo tabelaModelo = new REDTabelaModelo(reds);
+        tbAlunos.setModel(tabelaModelo);
+    }
+    
     private void btProcurarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProcurarAlunoActionPerformed
-
+        String prontuario = tfProntuarioProcurar.getText();
+        if (prontuario != null && !prontuario.isEmpty()) {
+            reds = redController.obterREDsProntuario(prontuario);
+        } else {
+            reds = redController.obterTodos();
+        }
+        
+        preencherTabela(reds);
     }//GEN-LAST:event_btProcurarAlunoActionPerformed
 
 

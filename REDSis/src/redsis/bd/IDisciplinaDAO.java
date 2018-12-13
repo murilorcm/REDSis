@@ -11,4 +11,5 @@ import redsis.model.RED;
 public interface IDisciplinaDAO {
     public void inserir(Disciplina disciplina);
     public List<Disciplina> obterDisciplinasRED(RED red);
+    public void remover(Disciplina disciplina);
 }

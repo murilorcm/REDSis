@@ -23,4 +23,12 @@ public class DisciplinaController {
     public List<Disciplina> obterDisciplinasRED(RED red) {
         return dao.obterDisciplinasRED(red);
     }
+    
+    public void removerAntigasRED(RED red) {
+        List<Disciplina> disciplinasOld = obterDisciplinasRED(red);
+        
+        disciplinasOld.forEach((disciplina) -> {
+            dao.remover(disciplina);
+        });
+    }
 }

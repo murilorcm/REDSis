@@ -5,12 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import redsis.model.RED;
 
 /**
@@ -30,15 +26,12 @@ public class REDDAO implements IREDDAO {
     @Override
     public void inserir(RED red) {
         try {
-           //
             con = cf.obterConexao();
             stm = con.prepareStatement("INSERT INTO reds (nomeAluno, prontuario, dataInicio, dataFim) VALUES (?, ?, ?, ?)");
             
             stm.setString(1, red.getNomeAluno());
             stm.setString(2, red.getProntuario());
-            //String dataInicio = sfd.format(red.getDataInicio());
             stm.setDate(3, new Date(red.getDataInicio().getTime()));
-            //String dataFim = sfd.format(red.getDataFim());
             stm.setDate(4, new Date(red.getDataFim().getTime()));
             
             stm.executeUpdate();
@@ -55,8 +48,8 @@ public class REDDAO implements IREDDAO {
             
             stm.setString(1, red.getNomeAluno());
             stm.setString(2, red.getProntuario());
-            stm.setDate(3, (Date) red.getDataInicio());
-            stm.setDate(4, (Date) red.getDataFim());
+            stm.setDate(3, new Date(red.getDataInicio().getTime()));
+            stm.setDate(4, new Date(red.getDataFim().getTime()));
             stm.setInt(5, red.getCodigo());
             
             stm.executeUpdate();                
@@ -69,7 +62,7 @@ public class REDDAO implements IREDDAO {
     public void deletar(RED red) {
         try {
             con = cf.obterConexao();
-            stm = con.prepareStatement("DELETE FROM contatos WHERE codigo = ?");
+            stm = con.prepareStatement("DELETE FROM reds WHERE codigo = ?");
             
             stm.setInt(1, red.getCodigo());
             
@@ -85,7 +78,7 @@ public class REDDAO implements IREDDAO {
             List reds = new LinkedList();
             
             con = cf.obterConexao();
-            stm = con.prepareStatement("SELECT * FROM red WHERE prontuario = ?");
+            stm = con.prepareStatement("SELECT * FROM reds WHERE prontuario = ?");
             
             stm.setString(1, prontuario);
             
@@ -126,5 +119,36 @@ public class REDDAO implements IREDDAO {
         } catch (SQLException ex) {
             throw new RuntimeException("Exceção: " + ex);
         }    
+    }
+
+    @Override
+    public List<RED> obterTodos() {
+    try {
+            List reds = new LinkedList();
+            
+            con = cf.obterConexao();
+            stm = con.prepareStatement("SELECT * FROM reds");
+            
+            
+            rs = stm.executeQuery();
+            
+            while(rs.next()) {
+                RED red = new RED();
+                red.setCodigo(rs.getInt("codigo"));
+                red.setNomeAluno(rs.getString("nomeAluno"));
+                red.setProntuario(rs.getString("prontuario"));
+                red.setDataInicio(rs.getDate("dataInicio"));
+                red.setDataFim(rs.getDate("dataFim"));
+                
+                List disciplinas = disciplinaDAO.obterDisciplinasRED(red);
+                red.setDisciplinas(disciplinas);
+          
+                reds.add(red);
+            }   
+            
+            return reds;            
+        } catch (SQLException ex) {
+            throw new RuntimeException("Exceção: " + ex);
+        }
     }
 }

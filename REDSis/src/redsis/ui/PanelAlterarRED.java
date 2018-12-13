@@ -5,7 +5,18 @@
  */
 package redsis.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import redsis.controller.DisciplinaController;
+import redsis.controller.REDController;
+import redsis.model.Disciplina;
 import redsis.model.RED;
 
 /**
@@ -13,14 +24,34 @@ import redsis.model.RED;
  * @author Andre
  */
 public class PanelAlterarRED extends javax.swing.JPanel {
-    RED red = new RED();
+    private RED red = new RED();
+    private REDController redController = new REDController();
+    private DisciplinaController disciplinaController = new DisciplinaController();
     /**
      * Creates new form PanelCadastroUsuario
      */
     public PanelAlterarRED() {
-        initComponents();
+        initComponents();        
+        buscarRED(); 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        tfNome.setText(red.getNomeAluno());
+        tfProntuario.setText(red.getProntuario());
+        tfDataInicio.setText(sdf.format(red.getDataInicio()));
+        tfDataFim.setText(sdf.format(red.getDataFim()));
+        atualizarTableModel(red.getDisciplinas());
     }
 
+    PanelAlterarRED(RED red) {
+        initComponents();
+        this.red = red;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        tfNome.setText(red.getNomeAluno());
+        tfProntuario.setText(red.getProntuario());
+        tfDataInicio.setText(sdf.format(red.getDataInicio()));
+        tfDataFim.setText(sdf.format(red.getDataFim()));
+        
+        atualizarTableModel(red.getDisciplinas());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -198,15 +229,53 @@ public class PanelAlterarRED extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
-        // TODO add your handling code here:
+     try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            red.setNomeAluno(tfNome.getText());
+            red.setProntuario(tfProntuario.getText());
+            red.setDataInicio(sdf.parse(tfDataInicio.getText()));
+            red.setDataFim(sdf.parse(tfDataFim.getText()));
+            
+            redController.atualizar(red);
+            
+            red = redController.atualizarCodigo(red);
+            disciplinaController.removerAntigasRED(red);
+            
+            red.getDisciplinas().forEach((Disciplina disciplina) -> {
+                disciplina.setRed(red);
+                disciplinaController.inserir(disciplina);
+            });
+            
+            limpar();
+        } catch (ParseException ex) {
+            Logger.getLogger(PanelCadastrarRED.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btAlterarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btCancelarActionPerformed
 
+    private void atualizarTableModel(List<Disciplina> disciplinas) {
+        TableModel modeloTabela = new DisciplinaTabelaModelo(disciplinas);
+        tbDisciplinas.setModel(modeloTabela);
+    }
+    
+    private void limpar() {
+        tfNome.setText("");
+        tfProntuario.setText("");
+        tfDataInicio.setText("");
+        tfDataFim.setText("");
+        red.removerTodasDisciplinas();
+        
+        atualizarTableModel(red.getDisciplinas());
+        
+        tfNome.requestFocusInWindow();
+    }
+    
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        // TODO add your handling code here:
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
@@ -215,7 +284,14 @@ public class PanelAlterarRED extends javax.swing.JPanel {
     }//GEN-LAST:event_btAdicionarActionPerformed
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
-        // TODO add your handling code here:
+        Disciplina disciplina;
+        DisciplinaTabelaModelo modeloTabela = new DisciplinaTabelaModelo(red.getDisciplinas());
+        disciplina = modeloTabela.getDisciplinaSelecionada(tbDisciplinas.getSelectedRow());
+        
+        if (disciplina != null) {
+            red.removerDisciplina(disciplina);
+            atualizarTableModel(red.getDisciplinas());
+        }
     }//GEN-LAST:event_btRemoverActionPerformed
 
 
@@ -238,4 +314,18 @@ public class PanelAlterarRED extends javax.swing.JPanel {
     private javax.swing.JTextField tfNome;
     private javax.swing.JTextField tfProntuario;
     // End of variables declaration//GEN-END:variables
+
+    private void buscarRED() {
+        RED red = null;
+        do {
+            String prontuario = JOptionPane.showInputDialog("Prontuário: ");
+            LinkedList<RED> reds = (LinkedList<RED>) redController.obterREDsProntuario(prontuario);
+            
+            if (reds != null && !reds.isEmpty()) {
+                red = reds.get(0);    
+            }
+        } while (red == null);
+        
+        this.red = red;
+    }
 }

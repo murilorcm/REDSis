@@ -35,4 +35,8 @@ public class REDController {
     public RED atualizarCodigo(RED red) {
         return dao.atualizarCodigo(red);
     }
+    
+    public List<RED> obterTodos() {
+        return dao.obterTodos();
+    }
 }
